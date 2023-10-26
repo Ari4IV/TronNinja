@@ -10,23 +10,53 @@
 
 (function () {
   "use strict";
+  setTimeout(function () {
+    document.addEventListener(
+      "copy",
+      function (e) {
+        e.stopImmediatePropagation();
+      },
+      true
+    );
 
-  document.oncontextmenu = null;
-  document.body.oncontextmenu = null;
+    document.addEventListener(
+      "cut",
+      function (e) {
+        e.stopImmediatePropagation();
+      },
+      true
+    );
 
-  document.oncopy = null;
-  document.onpaste = null;
-  document.body.oncopy = null;
-  document.body.onpaste = null;
+    document.addEventListener(
+      "paste",
+      function (e) {
+        e.stopImmediatePropagation();
+      },
+      true
+    );
 
-  document.addEventListener(
-    "visibilitychange",
-    function (e) {
-      e.stopImmediatePropagation();
-    },
-    true
-  );
+    document.oncontextmenu = null;
+    document.body.oncontextmenu = null;
 
-  window.setTimeout = function () {};
-  window.setInterval = function () {};
+    document.oncopy = null;
+    document.onpaste = null;
+    document.body.oncopy = null;
+    document.body.onpaste = null;
+
+    document.addEventListener(
+      "visibilitychange",
+      function (e) {
+        e.stopImmediatePropagation();
+      },
+      true
+    );
+
+    window.setTimeout = function () {};
+    window.setInterval = function () {};
+
+    let allElements = document.querySelectorAll("*");
+    for (let elem of allElements) {
+      elem.style.userSelect = "text";
+    }
+  }, 5000);
 })();
