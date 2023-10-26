@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TronNinja
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      1.0
 // @description  Bypass right-click, copy/paste, and window leave restrictions
 // @author       Ari4IV
 // @match        *://*/*
