@@ -11,52 +11,36 @@
 (function () {
   "use strict";
   setTimeout(function () {
-    document.addEventListener(
-      "copy",
-      function (e) {
-        e.stopImmediatePropagation();
-      },
-      true
-    );
-
-    document.addEventListener(
-      "cut",
-      function (e) {
-        e.stopImmediatePropagation();
-      },
-      true
-    );
-
-    document.addEventListener(
-      "paste",
-      function (e) {
-        e.stopImmediatePropagation();
-      },
-      true
-    );
-
-    document.oncontextmenu = null;
-    document.body.oncontextmenu = null;
-
-    document.oncopy = null;
-    document.onpaste = null;
-    document.body.oncopy = null;
-    document.body.onpaste = null;
-
-    document.addEventListener(
-      "visibilitychange",
-      function (e) {
-        e.stopImmediatePropagation();
-      },
-      true
-    );
+    
+    const eventsToBlock = ["copy", "cut", "paste", "contextmenu", "selectstart", "keydown", "dragstart", "mousedown", "mouseup", "visibilitychange", "blur"];
+    for (let eventName of eventsToBlock) {
+        document.addEventListener(eventName, function (e) {
+            e.stopImmediatePropagation();
+        }, true);
+    }
 
     window.setTimeout = function () {};
     window.setInterval = function () {};
 
-    let allElements = document.querySelectorAll("*");
-    for (let elem of allElements) {
-      elem.style.userSelect = "text";
+    $("*").css("user-select", "text").off("blur");
+
+    $(window).off("blur beforeunload");
+    $(document).off(eventsToBlock.join(" "));
+
+    const originalAddEventListener = EventTarget.prototype.addEventListener;
+    EventTarget.prototype.addEventListener = function (type, listener, options) {
+        if (type !== "blur") {
+            originalAddEventListener.call(this, type, listener, options);
+        }
+    };
+
+    if (typeof blur_count !== "undefined") {
+      blur_count = 0;
     }
+
+    if (typeof isblur !== "undefined") {
+      isblur = false;
+    }
+    
   }, 5000);
 })();
